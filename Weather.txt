@@ -1,0 +1,52 @@
+import requests
+
+API_URL = "https://samples.openweathermap.org/data/2.5/forecast/hourly?q=London,us&appid=b6907d289e10d714a6e88b30761fae22"
+
+def get_weather_data():
+    response = requests.get(API_URL)
+    return response.json()
+
+def get_temp_by_date(date):
+    weather_data = get_weather_data()
+    for item in weather_data['list']:
+        if item['dt_txt'] == date:
+            return item['main']['temp']
+
+def get_wind_speed_by_date(date):
+    weather_data = get_weather_data()
+    for item in weather_data['list']:
+        if item['dt_txt'] == date:
+            return item['wind']['speed']
+
+def get_pressure_by_date(date):
+    weather_data = get_weather_data()
+    for item in weather_data['list']:
+        if item['dt_txt'] == date:
+            return item['main']['pressure']
+
+while True:
+    print("Options:")
+    print("1. Get weather")
+    print("2. Get Wind Speed")
+    print("3. Get Pressure")
+    print("0. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == '1':
+        date = input("Enter the date (YYYY-MM-DD HH:MM:SS): ")
+        temperature = get_temp_by_date(date)
+        print(f"Temperature on {date} is {temperature}°C")
+    elif choice == '2':
+        date = input("Enter the date (YYYY-MM-DD HH:MM:SS): ")
+        wind_speed = get_wind_speed_by_date(date)
+        print(f"Wind Speed on {date} is {wind_speed} m/s")
+    elif choice == '3':
+        date = input("Enter the date (YYYY-MM-DD HH:MM:SS): ")
+        pressure = get_pressure_by_date(date)
+        print(f"Pressure on {date} is {pressure} hPa")
+    elif choice == '0':
+        print("Exiting the program.")
+        break
+    else:
+        print("Invalid option. Please try again.")
